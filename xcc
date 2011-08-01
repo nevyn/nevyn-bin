@@ -1,0 +1,2 @@
+#!/bin/bash
+open core/_mac/core.xcodeproj
