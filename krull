@@ -1,0 +1,28 @@
+#!/bin/bash
+
+if [ "$2" == "" ]
+then
+  echo "Usage"
+  echo " krull -3 username"
+  echo "  Set users post-open-graph to -3"
+  echo " krull dissa username"
+  echo "  Disconnect user from facebook"
+  echo " krull fbid"
+  echo "  I don't know what this does but fbid is the number after the last period (.) in your facebook profile photo url!"
+  exit 1
+fi
+
+if [ "$1" == "-3" ]
+then
+  curl "http://user2-001.lon.spotify.net:8081/user/attr/set?username=$2&key=post-open-graph&value=-3"
+fi
+
+if [ "$1" == "dissa" ]
+then
+  curl "http://user2-001.lon.spotify.net:8081/user/attr/remove?username=$2&key=facebook_uid"
+fi
+
+if [ "$1" == "fbid" ]
+then
+  curl "http://tyra.sto.spotify.net:8250/social/service/map?service=facebook&uid=$2"
+fi

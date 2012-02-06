@@ -1,0 +1,1 @@
+GIT_PAGER='less -n +/^commit\ \[0-9a-f\]+' git log --color -p --stat
