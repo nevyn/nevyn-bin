@@ -1,0 +1,2 @@
+#!/bin/bash
+git status --porcelain | grep "UU " | cut -d " " -f 2 | xargs mate

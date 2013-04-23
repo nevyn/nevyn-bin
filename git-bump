@@ -1,0 +1,62 @@
+#!/bin/bash
+set -o nounset
+set -o errexit
+
+function submo-last-commit {
+  PATH_WITHOUT_TRAILING_SLASH=$(echo "$1" | sed 's/\/*$//')
+
+  git ls-tree HEAD "$PATH_WITHOUT_TRAILING_SLASH" | sed 's/[[:digit:]]*[[:space:]]*[^ ]*[[:space:]]*\([0-9a-fA-F]*\).*/\1/'
+}
+
+function submo-current-commit {
+  pushd "$1" > /dev/null
+  git rev-parse HEAD
+  popd > /dev/null
+}
+
+function bump-logmsg {
+  OLD_COMMIT=$(submo-last-commit "$1")
+  NEW_COMMIT=$(submo-current-commit "$1")
+
+  pushd "$1" > /dev/null
+  PAGER=cat git log --pretty=oneline --abbrev-commit "$OLD_COMMIT".."$NEW_COMMIT" | sed 's/^/* /'
+  popd > /dev/null
+}
+
+function usage {
+  echo Usage: $0 path-to-submodule branch [what for]
+  exit
+}
+
+if [ -z "${1:-}" ]
+then
+  usage
+fi
+
+if [ -z "${2:-}" ]
+then
+  usage
+fi
+
+if [ -z "${3:-}" ]
+then
+  REASON=""
+else
+  REASON="for $3"
+fi
+
+pushd "$1" > /dev/null
+git fetch
+git checkout "origin/$2"
+popd > /dev/null
+
+git add "$1"
+
+LOGMSG=$(echo "Bump $(basename "$1") $REASON" && echo && bump-logmsg "$1")
+
+git commit -m "$LOGMSG"
+
+echo
+echo Created bump commit, with commit message:
+echo
+echo "$LOGMSG"

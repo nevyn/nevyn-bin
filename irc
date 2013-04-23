@@ -1,0 +1,2 @@
+#!/bin/bash
+TERM=screen ssh rah.nevyn.nu tmux attach -t 0
