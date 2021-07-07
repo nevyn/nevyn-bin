@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Turns an https origin url into an ssh url so you can push with ssh key
+git config remote.origin.url | sed 's/https:\/\/github.com\//git@github.com:/' | xargs git config remote.origin.url
+
+# However, it turns out you can just add this to your global gitconfig
+# instead:
+
+# [url "ssh://git@github.com/"]
+#     insteadOf = https://github.com/
+
+# ...... so yeah. that's a lot of wasted effort over the years.
