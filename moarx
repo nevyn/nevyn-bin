@@ -1,0 +1,6 @@
+#!/bin/bash
+# from https://unix.stackexchange.com/questions/85383/how-to-start-a-second-x-session
+# start another x session. good for running two WMs at the same time.
+# THis one starts i3, you can change that though
+
+sudo xinit /usr/bin/xterm  -e "su $(whoami) -c i3"  $* -- :2
