@@ -1,0 +1,4 @@
+#!/bin/bash
+pulseaudio -k
+systemctl --user restart pipewire pipewire-pulse
+systemctl --user daemon-reload
